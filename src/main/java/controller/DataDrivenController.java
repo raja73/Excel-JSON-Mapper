@@ -45,7 +45,7 @@ public class DataDrivenController {
 
     private List<Map<String, String>> excelToMapRows(File file) {
         List<Map<String, String>> mapList = new ArrayList<>();
-        columnsExcelData = new ArrayList<String>();
+        columnsExcelData = new ArrayList<>();
         int cellType = 0;
         try {
             FileInputStream inputStream = new FileInputStream(file);
@@ -135,7 +135,6 @@ public class DataDrivenController {
     private Map<String, String> excelToMapColumns(File file) {
         Map<String, String> map = new HashMap<>();
         List<String> columnNames = new ArrayList<String>();
-        int cellType = 0;
         try {
             FileInputStream inputStream = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -188,7 +187,7 @@ public class DataDrivenController {
         }
     }
 
-    public void convertEachData(Map<String, String> mapED) {
+    private void convertEachData(Map<String, String> mapED) {
         File jsonToExcelFile = new File(mainView.getPathAreaJsontoExcel().getText());
         File json = new File(mainView.getPathAreaJson().getText());
 
@@ -302,7 +301,7 @@ public class DataDrivenController {
     }
 
 
-    public JsonObject jsonToObject(File file) {
+    private JsonObject jsonToObject(File file) {
         JsonParser parser = new JsonParser();
         try {
             JsonObject obj = (JsonObject) parser.parse(new FileReader(file));
@@ -334,7 +333,7 @@ public class DataDrivenController {
     }
 
     private Map<String, List<Map<String, String>>> excelToMapCollections(File file) {
-        columnsCollectionExcel = new ArrayList<String>();
+        columnsCollectionExcel = new ArrayList<>();
         int cellType = 0;
         try {
             FileInputStream inputStream = new FileInputStream(file);

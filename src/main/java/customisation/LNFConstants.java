@@ -7,5 +7,5 @@ import java.awt.Color;
  */
 public interface LNFConstants {
 
-    public final static Color ddBlack = new Color(0, 0, 0, 255);
+    Color ddBlack = new Color(0, 0, 0, 255);
 }

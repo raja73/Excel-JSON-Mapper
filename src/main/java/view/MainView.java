@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -38,41 +38,17 @@ public class MainView {
         fileFrame = new JFrame("Select File From Here");
         mainFrame.setContentPane(new JLabel(new ImageIcon("src/main/resources/Images/background_dark.png")));
 
-        labelJsontoExcel = new JLabel("JSON XML Mapping");
-        labelJsontoExcel.setBounds(30, 100, 150, 20);
-        labelJsontoExcel.setLayout(null);
-        labelJsontoExcel.setVisible(true);
-        labelJsontoExcel.setForeground(Color.WHITE);
+        labelJsontoExcel = createJLabel("JSON XML Mapping",new Rectangle(30, 100, 150, 20));
 
-        labelExceltoData = new JLabel("Excel Input");
-        labelExceltoData.setBounds(30, 170, 150, 20);
-        labelExceltoData.setLayout(null);
-        labelExceltoData.setVisible(true);
-        labelExceltoData.setForeground(Color.WHITE);
+        labelExceltoData = createJLabel("Excel Input",new Rectangle(30, 170, 150, 20));
 
-        labelJson = new JLabel("Default JSON");
-        labelJson.setBounds(30, 240, 150, 20);
-        labelJson.setLayout(null);
-        labelJson.setVisible(true);
-        labelJson.setForeground(Color.WHITE);
+        labelJson = createJLabel("Default JSON", new Rectangle(30, 240, 150, 20));
 
-        labelOutput = new JLabel("Output Folder");
-        labelOutput.setBounds(30, 310, 150, 20);
-        labelOutput.setLayout(null);
-        labelOutput.setVisible(true);
-        labelOutput.setForeground(Color.WHITE);
+        labelOutput = createJLabel("Output Folder", new Rectangle(30, 310, 150, 20));
 
-        labelUserName = new JLabel("User Name");
-        labelUserName.setBounds(30, 380, 150, 20);
-        labelUserName.setLayout(null);
-        labelUserName.setVisible(true);
-        labelUserName.setForeground(Color.WHITE);
+        labelUserName = createJLabel("User Name", new Rectangle(30, 380, 150, 20));
 
-        labelPassword = new JLabel("Password");
-        labelPassword.setBounds(380, 380, 150, 20);
-        labelPassword.setLayout(null);
-        labelPassword.setVisible(true);
-        labelPassword.setForeground(Color.WHITE);
+        labelPassword = createJLabel("User Name", new Rectangle(380, 380, 150, 20));
 
         pathAreaJsontoExcel = new JTextField();
         pathAreaJsontoExcel.setBounds(180, 100, 400, 20);
@@ -292,6 +268,15 @@ public class MainView {
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
         fileFrame.setSize(600, 600);
+    }
+
+    private JLabel createJLabel(String labelName, Rectangle bounds) {
+        JLabel label = new JLabel(labelName);
+        label.setBounds(bounds);
+        label.setLayout(null);
+        label.setVisible(true);
+        label.setForeground(Color.WHITE);
+        return label;
     }
 
     public JTextField getPathAreaJsontoExcel() {
