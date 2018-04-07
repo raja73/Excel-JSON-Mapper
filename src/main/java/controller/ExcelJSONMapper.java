@@ -55,7 +55,7 @@ public class ExcelJSONMapper {
                 try {
                     while (rowIterator.hasNext()) {
                         Map<String, String> map = new HashMap<>();
-                        placeEntryToMap(map,columnsExcelData,countRow,rowIterator);
+                        placeEntryToMap(map, columnsExcelData, countRow, rowIterator);
                         if (countRow != 0) {
                             mapList.add(map);
                         }
@@ -143,7 +143,7 @@ public class ExcelJSONMapper {
         JsonObject object = jsonToObject(json);
         JsonArray jArray;
 
-        if(object!=null){
+        if (object != null) {
             try {
                 FileInputStream inputStream = new FileInputStream(jsonToExcelFile);
                 Workbook workbook = new XSSFWorkbook(inputStream);
@@ -259,8 +259,6 @@ public class ExcelJSONMapper {
     }
 
     private void objectToJson(JsonObject object, String fileName) throws Exception {
-        mainView.getProgress().append("Creating JSON from JSON Object\n");
-        mainView.getProgress().setText(mainView.getProgress().getText());
         String filePath = mainView.getPathAreaOutputFolderText();
         File file = new File(filePath + "/" + fileName + ".json");
         try (FileWriter inputStream = new FileWriter(file);
@@ -268,8 +266,6 @@ public class ExcelJSONMapper {
              PrintWriter out = new PrintWriter(bufferStream)) {
             out.print(object.toString());
         }
-        mainView.getProgress().append("Output File is " + fileName + ".json\n");
-        mainView.getProgress().setText(mainView.getProgress().getText());
     }
 
     private Map<String, List<Map<String, String>>> excelToMapCollections(File file) {
@@ -287,7 +283,7 @@ public class ExcelJSONMapper {
                 try {
                     while (rowIterator.hasNext()) {
                         Map<String, String> map = new HashMap<>();
-                        placeEntryToMap(map, columnsCollectionExcel,countRow, rowIterator);
+                        placeEntryToMap(map, columnsCollectionExcel, countRow, rowIterator);
                         if (countRow != 0) {
                             testName = map.get(columnsCollectionExcel.get(0));
                             if (mapCollections.containsKey(testName)) {
@@ -312,7 +308,7 @@ public class ExcelJSONMapper {
         return mapCollections;
     }
 
-    private void placeEntryToMap(Map<String,String> map,List<String> columnList, int countRow, Iterator<Row> rowIterator) {
+    private void placeEntryToMap(Map<String, String> map, List<String> columnList, int countRow, Iterator<Row> rowIterator) {
         if (countRow == 0) {
             Row row = rowIterator.next();
             row.forEach(cell -> columnList.add(cell.getStringCellValue()));
@@ -343,6 +339,7 @@ public class ExcelJSONMapper {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
         ExcelJSONMapper controller = new ExcelJSONMapper();
     }

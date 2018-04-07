@@ -13,8 +13,7 @@ import customisation.LNFConstants;
 
 public class MainView implements LNFConstants, ImageConstants {
     private JFrame mainFrame, fileFrame;
-    private JTextField pathAreaJsontoExcel, pathAreaExceltoData, pathAreaJson, pathAreaOutputFolder, pathAreaExtraInfo;
-    private JTextArea progress;
+    private JTextField pathAreaJsontoExcel, pathAreaExceltoData, pathAreaJson, pathAreaOutputFolder;
     private ExcelJSONMapper controller;
 
     public MainView(ExcelJSONMapper controller) {
@@ -45,13 +44,11 @@ public class MainView implements LNFConstants, ImageConstants {
         pathAreaExceltoData = createTextField(new Rectangle(180, 170, 400, 20));
         pathAreaJson = createTextField(new Rectangle(180, 240, 400, 20));
         pathAreaOutputFolder = createTextField(new Rectangle(180, 310, 400, 20));
-        pathAreaExtraInfo = createTextField(new Rectangle(180, 380, 400, 20));
 
         createButton(new Rectangle(600, 100, 100, 20), pathAreaJsontoExcel);
         createButton(new Rectangle(600, 170, 100, 20), pathAreaExceltoData);
         createButton(new Rectangle(600, 240, 100, 20), pathAreaJson);
         createButton(new Rectangle(600, 310, 100, 20), pathAreaOutputFolder);
-        createButton(new Rectangle(600, 310, 100, 20), pathAreaExtraInfo);
 
         JButton convert = new JButton("Convert");
         convert.setBackground(Color.GRAY);
@@ -80,19 +77,7 @@ public class MainView implements LNFConstants, ImageConstants {
             }
         });
 
-        progress = new JTextArea();
-        progress.setBackground(Color.darkGray);
-        progress.setForeground(Color.WHITE);
-
-        JScrollPane scrollPane = new JScrollPane(progress);
-        scrollPane.setBounds(180, 520, 400, 100);
-        scrollPane.setLayout(new ScrollPaneLayout());
-        scrollPane.setBorder(null);
-        scrollPane.setVisible(true);
-
-        mainFrame.getContentPane().add(scrollPane);
-
-        mainFrame.setSize(800, 700);
+        mainFrame.setSize(800, 400);
         mainFrame.setResizable(false);
         mainFrame.setLayout(null);
         mainFrame.setVisible(true);
@@ -159,15 +144,7 @@ public class MainView implements LNFConstants, ImageConstants {
         return pathAreaJson.getText();
     }
 
-    public JTextArea getProgress() {
-        return progress;
-    }
-
     public String getPathAreaOutputFolderText() {
         return pathAreaOutputFolder.getText();
-    }
-
-    public String getPathAreaExtraInfoText() {
-        return pathAreaExtraInfo.getText();
     }
 }
