@@ -1,11 +1,11 @@
 package customisation;
 
-import java.awt.Color;
-
-/**
- * Created by rajemani on 11/30/2016.
- */
 public interface LNFConstants {
 
-    Color ddBlack = new Color(0, 0, 0, 255);
+    String PROJECT_NAME = "Excel JSON Mapper";
+    String FILE_CHOOSER = "Select the Required File";
+    String JSON_XML_MAPPING = "JSON XML Mapping";
+    String EXCEL_INPUT = "Excel Input";
+    String DEFAULT_JSON = "Default JSON";
+    String OUTPUT_FOLDER = "Output Folder";
 }

@@ -27,19 +27,18 @@ import com.google.gson.JsonParser;
 import view.MainView;
 
 
-public class DataDrivenController {
+public class ExcelJSONMapper {
     private int numberOfSheets = 0;
     private List<String> columnsJsonExcel = new ArrayList<>();
     private List<String> columnsCollectionExcel = new ArrayList<>();
     private List<String> columnsExcelData = new ArrayList<>();
     private MainView mainView;
-    private String userName, passWord;
     private JsonObject object;
     private Map<String, List<Map<String, String>>> mapCollections = null;
     private Map<String, String> mapXmlTags;
     private Set<String> collectionOccurred;
 
-    public DataDrivenController() {
+    private ExcelJSONMapper() {
         mainView = new MainView(this);
     }
 
@@ -125,16 +124,11 @@ public class DataDrivenController {
     }
 
     private boolean CheckForNumber(String numericCellValue) {
-        if (numericCellValue.contains(".")) {
-            return true;
-        } else {
-            return false;
-        }
+       return numericCellValue.contains(".");
     }
 
     private Map<String, String> excelToMapColumns(File file) {
         Map<String, String> map = new HashMap<>();
-        List<String> columnNames = new ArrayList<String>();
         try {
             FileInputStream inputStream = new FileInputStream(file);
             Workbook workbook = new XSSFWorkbook(inputStream);
@@ -145,14 +139,7 @@ public class DataDrivenController {
                 int countRow = 0;
                 try {
                     while (rowIterator.hasNext()) {
-                        if (countRow == 0) {
-                            Row row = rowIterator.next();
-                            Iterator<Cell> cellIterator = row.iterator();
-                            while (cellIterator.hasNext()) {
-                                Cell cell = cellIterator.next();
-                                columnNames.add(cell.getStringCellValue());
-                            }
-                        } else {
+                        if (countRow != 0) {
                             Row row = rowIterator.next();
                             Iterator<org.apache.poi.ss.usermodel.Cell> cellIterator = row.iterator();
                             Cell cell1 = cellIterator.next();
@@ -171,25 +158,28 @@ public class DataDrivenController {
         return map;
     }
 
-    public void convertToJSON(String userName, String passWord) throws InterruptedException {
-        this.userName = userName;
-        this.passWord = passWord;
-        File exceltoDataFile = new File(mainView.getPathAreaExceltoData().getText());
-        File jsontoXMLFile = new File(mainView.getPathAreaJsontoExcel().getText());
+    public void convertToJSON(){
+        File exceltoDataFile = new File(mainView.getPathAreaExceltoDataText());
+        File jsontoXMLFile = new File(mainView.getPathAreaJsontoExcelText());
+        File extraInfo = new File(mainView.getPathAreaExtraInfoText());
         List<Map<String, String>> mapMainData;
         mapMainData = excelToMapRows(exceltoDataFile);
         mapXmlTags = excelToMapColumns(jsontoXMLFile);
         mapCollections = new HashMap<>();
         mapCollections = excelToMapCollections(exceltoDataFile);
-        for (Map p : mapMainData) {
+        for (Map<String,String> p : mapMainData) {
             convertEachData(p);
-            Thread.sleep(5000);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void convertEachData(Map<String, String> mapED) {
-        File jsonToExcelFile = new File(mainView.getPathAreaJsontoExcel().getText());
-        File json = new File(mainView.getPathAreaJson().getText());
+        File jsonToExcelFile = new File(mainView.getPathAreaJsontoExcelText());
+        File json = new File(mainView.getPathAreaJsonText());
 
         object = jsonToObject(json);
         JsonArray jArray;
@@ -304,24 +294,23 @@ public class DataDrivenController {
     private JsonObject jsonToObject(File file) {
         JsonParser parser = new JsonParser();
         try {
-            JsonObject obj = (JsonObject) parser.parse(new FileReader(file));
-            return obj;
+            return  (JsonObject) parser.parse(new FileReader(file));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    private File objectToJson(JsonObject object, String fileName) throws Exception {
+    private void objectToJson(JsonObject object, String fileName) throws Exception {
         mainView.getProgress().append("Creating JSON from JSON Object\n");
         mainView.getProgress().setText(mainView.getProgress().getText());
-        String filePath = mainView.getPathAreaOutputFolder().getText();
+        String filePath = mainView.getPathAreaOutputFolderText();
         File file = new File(filePath + "/" + fileName + ".json");
         try (FileWriter inputStream = new FileWriter(file);
              BufferedWriter bufferStream = new BufferedWriter(inputStream);
              PrintWriter out = new PrintWriter(bufferStream)) {
             StringBuilder sb = new StringBuilder();
-            out.print("{\"headerInformation\": {\"userID\": \"" + userName + "\",\"password\": \"" + passWord + "\"},\"inputParameters\": {\"inputParameter\": [{\"name\": \"dealobject\",\"value\": ");
+            //out.print("{\"headerInformation\": {\"userID\": \"" + userName + "\",\"password\": \"" + passWord + "\"},\"inputParameters\": {\"inputParameter\": [{\"name\": \"dealobject\",\"value\": ");
             out.print(object.toString());
             out.print(" ,\"isBodyParameter\": true,\"isRouteParameter\": false}]},\"outputObject\": ");
             out.print(object.toString());
@@ -329,7 +318,6 @@ public class DataDrivenController {
         }
         mainView.getProgress().append("Output File is " + fileName + ".json\n");
         mainView.getProgress().setText(mainView.getProgress().getText());
-        return file;
     }
 
     private Map<String, List<Map<String, String>>> excelToMapCollections(File file) {
@@ -405,7 +393,7 @@ public class DataDrivenController {
                                 mapCollections.get(testName).add(map);
                             } else {
                                 map.remove(columnsCollectionExcel.get(0));
-                                List list = new ArrayList();
+                                List <Map<String, String>> list = new ArrayList<>();
                                 list.add(map);
                                 mapCollections.put(testName, list);
                             }
@@ -423,6 +411,6 @@ public class DataDrivenController {
     }
 
     public static void main(String[] args) {
-        DataDrivenController controller = new DataDrivenController();
+        ExcelJSONMapper controller = new ExcelJSONMapper();
     }
 }
